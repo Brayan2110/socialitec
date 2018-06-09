@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/texto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".itempublicacionesamigo">
+
+    <TextView
+        android:id="@+id/textViewtexto"
+        android:layout_width="308dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewfecha" />
+
+    <TextView
+        android:id="@+id/textViewfecha"
+        android:layout_width="240dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewimagen"
+        android:layout_width="308dp"
+        android:layout_height="232dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewtexto"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal_background" />
+</android.support.constraint.ConstraintLayout>

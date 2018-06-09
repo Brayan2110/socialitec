@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "391652436617",
+    "firebase_url": "https://socialitec-9e920.firebaseio.com",
+    "project_id": "socialitec-9e920",
+    "storage_bucket": "socialitec-9e920.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391652436617:android:e9bc1d6a15199c89",
+        "android_client_info": {
+          "package_name": "com.example.bvarg.ubicacion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "391652436617-fqb3d5vdd1onbj89qm5p0qeg6ffu90ls.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "391652436617-fqb3d5vdd1onbj89qm5p0qeg6ffu90ls.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5-JTt7UCntg0TfM9zJapMWBgYm8aeVsA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
