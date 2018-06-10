@@ -56,7 +56,7 @@
             android:id="@+id/lista"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#BDBDBD" />
+            android:background="@color/common_google_signin_btn_text_dark_default" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

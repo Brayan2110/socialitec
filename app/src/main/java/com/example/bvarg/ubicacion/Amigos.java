@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -80,6 +81,12 @@ public class Amigos extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Toast.makeText(getContext(),"Presiona para ver perfil o mantener para iniciar conversación", Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -1,12 +1,14 @@
 package com.example.bvarg.ubicacion;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,11 +30,16 @@ public class signup extends AppCompatActivity {
     EditText password2;
     EditText apellidos;
     EditText nombre;
+    RelativeLayout loadingPanel;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         setTitle("Registro");
+        loadingPanel = findViewById(R.id.loadingPanel);
         correo = findViewById(R.id.editText_email);
         password = findViewById(R.id.editText_contrasena);
         password2 = findViewById(R.id.editText_contrasena2);
@@ -45,7 +52,8 @@ public class signup extends AppCompatActivity {
             public void onClick(View v) {
                 if(!correo.getText().toString().equals("") && !password.getText().toString().equals("") && !password2.getText().toString().equals("") && !apellidos.getText().toString().equals("") && !nombre.getText().toString().equals("")){
                     if(password.getText().toString().equals(password2.getText().toString())){
-                        registrar(correo.getText().toString(), password.getText().toString(),nombre.getText().toString(),apellidos.getText().toString());
+                        loadingPanel.setVisibility(View.VISIBLE);
+                        registrar(correo.getText().toString().toLowerCase(), password.getText().toString(),nombre.getText().toString(),apellidos.getText().toString());
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Las dos contraseñas deben ser iguales", Toast.LENGTH_SHORT).show();
@@ -76,6 +84,7 @@ public class signup extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
+                        loadingPanel.setVisibility(View.INVISIBLE);
                         Toast.makeText(getApplicationContext(), "No se pudo completar el registro", Toast.LENGTH_SHORT).show();
                         Log.d("Error.Response", "fallo");
                     }

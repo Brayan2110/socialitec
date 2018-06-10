@@ -1,6 +1,7 @@
 package com.example.bvarg.ubicacion;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -47,6 +49,7 @@ public class Menu_Nav extends AppCompatActivity
     static View hView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu__nav);
         setTitle("SocialiTec");
@@ -218,5 +221,10 @@ public class Menu_Nav extends AppCompatActivity
             }
         };
         queue.add(postRequest);
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+        }
+        return true;
     }
 }
