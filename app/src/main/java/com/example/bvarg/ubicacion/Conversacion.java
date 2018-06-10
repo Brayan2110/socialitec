@@ -102,6 +102,7 @@ public class Conversacion extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_conversacion, container, false);
         ((Menu_Nav) getActivity()).setActionBarTitle(nombre);
+        mensajes2 = new ArrayList<>();
         Textmensaje = vista.findViewById(R.id.editTextmensaje);
         enviarmensaje = vista.findViewById(R.id.buttonenviar);
         enviarmensaje.setOnClickListener(new View.OnClickListener() {

@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,6 +91,7 @@ public class Noticias extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_noticias, container, false);
         ((Menu_Nav) getActivity()).setActionBarTitle("Noticias");
+        publicaciones = new ArrayList<>();
         buscarnoticias(login.sharedPreferences.getString("token",""));
         return vista;
     }
@@ -146,7 +148,7 @@ public class Noticias extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent){
             View itemView = convertView;
 
-            if(publicaciones.get(position).getImagen() != 0) {
+            if(!publicaciones.get(publicaciones.size()-1-position).getImagen().equals("")) {
                 itemView = getLayoutInflater().inflate(R.layout.activity_itempublicacionesamigo, parent, false);
             }
             else{
@@ -154,16 +156,20 @@ public class Noticias extends Fragment {
             }
 
             Log.d("numero", String.valueOf(position));
-            Publicacion Currentpublicacion = publicaciones.get(position);
+            Publicacion Currentpublicacion = publicaciones.get(publicaciones.size()-1-position);
 
-            if(Currentpublicacion.getImagen() != 0){
+            if(!Currentpublicacion.getImagen().equals("")){
                 TextView FechaText = itemView.findViewById(R.id.textViewfecha);
                 TextView Texto = itemView.findViewById(R.id.textViewtexto);
                 ImageView Imagen = itemView.findViewById(R.id.imageViewimagen);
 
                 FechaText.setText(Currentpublicacion.getFecha());
                 Texto.setText(Currentpublicacion.getMensaje());
-                Imagen.setImageResource(Currentpublicacion.getImagen());
+                if(!Currentpublicacion.getImagen().equals("")){
+                    Glide.with(getContext())
+                            .load(Uri.parse(Currentpublicacion.getImagen()))
+                            .into(Imagen);
+                }
             }
             else{
                 TextView FechaText = itemView.findViewById(R.id.textViewfecha);
@@ -203,7 +209,10 @@ public class Noticias extends Fragment {
                                     String anho = mainObject.getString("newsDate").substring(0,4);
                                     String mes = mainObject.getString("newsDate").substring(5,7);
                                     String dia = mainObject.getString("newsDate").substring(8,10);
-                                    publicaciones.add(new Publicacion("","", mainObject.getString("texto"),dia+"/"+mes+"/"+anho));
+                                    publicaciones.add(new Publicacion("","", mainObject.getString("texto"),dia+"/"+mes+"/"+anho,""));
+                                    if(mainObject.has("imagen")){
+                                        publicaciones.get(publicaciones.size()-1).setImagen(mainObject.getString("imagen"));
+                                    }
                                 }
 
                             }

@@ -97,6 +97,8 @@ public class Mensajes extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_mensajes, container, false);
+        personas = new ArrayList<>();
+        mensajes = new ArrayList<>();
         ((Menu_Nav) getActivity()).setActionBarTitle("Mensajes");
         lista = vista.findViewById(R.id.lista);
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -65,6 +66,7 @@ public class Perfil extends Fragment {
     Button guardar;
     Button editar;
     Button atras;
+    FloatingActionButton fab;
     ImageView foto;
     EditText nombree;
     EditText apellidos;
@@ -117,6 +119,7 @@ public class Perfil extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_perfil, container, false);
+        publicaciones = new ArrayList<>();
         ((Menu_Nav) getActivity()).setActionBarTitle("Perfil");
         mProgressDialog = new ProgressDialog(getContext());
         mStorage = FirebaseStorage.getInstance().getReference();
@@ -125,6 +128,17 @@ public class Perfil extends Fragment {
         apellidos = vista.findViewById(R.id.editTextapellidos);
         apellidos.setEnabled(false);
         foto = vista.findViewById(R.id.imageViewfoto);
+        fab = vista.findViewById(R.id.button_floating);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction trans = getFragmentManager().beginTransaction();
+                trans.replace(R.id.content_main, new Publicar());
+                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                trans.addToBackStack(null);
+                trans.commit();
+            }
+        });
         foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,6 +189,7 @@ public class Perfil extends Fragment {
                 }
             }
         });
+
         extraernombre(login.sharedPreferences.getString("id",""));
         buscarpublicaciones(login.sharedPreferences.getString("token",""),login.sharedPreferences.getString("id",""));
         return vista;
@@ -198,11 +213,7 @@ public class Perfil extends Fragment {
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -317,12 +328,12 @@ public class Perfil extends Fragment {
 
     public class milista extends ArrayAdapter<Publicacion>{
         public milista(){
-            super(vista.getContext(), R.layout.activity_itemamigo, publicaciones);
+            super(vista.getContext(), R.layout.activity_itempublicacionesamigo, publicaciones);
         }
         public View getView(int position, View convertView, ViewGroup parent){
             View itemView = convertView;
 
-            if(publicaciones.get(position).getImagen() != 0) {
+            if(!publicaciones.get(publicaciones.size()-1-position).getImagen().equals("")) {
                 itemView = getLayoutInflater().inflate(R.layout.activity_itempublicacionesamigo, parent, false);
             }
             else{
@@ -330,16 +341,20 @@ public class Perfil extends Fragment {
             }
 
             Log.d("numero", String.valueOf(position));
-            Publicacion Currentpublicacion = publicaciones.get(position);
+            Publicacion Currentpublicacion = publicaciones.get(publicaciones.size()-1-position);
 
-            if(Currentpublicacion.getImagen() != 0){
+            if(!Currentpublicacion.getImagen().equals("")){
                 TextView FechaText = itemView.findViewById(R.id.textViewfecha);
                 TextView Texto = itemView.findViewById(R.id.textViewtexto);
                 ImageView Imagen = itemView.findViewById(R.id.imageViewimagen);
 
                 FechaText.setText(Currentpublicacion.getFecha());
                 Texto.setText(Currentpublicacion.getMensaje());
-                Imagen.setImageResource(Currentpublicacion.getImagen());
+                if(!Currentpublicacion.getImagen().equals("")){
+                    Glide.with(getContext())
+                            .load(Uri.parse(Currentpublicacion.getImagen()))
+                            .into(Imagen);
+                }
             }
             else{
                 TextView FechaText = itemView.findViewById(R.id.textViewfecha);
@@ -381,7 +396,10 @@ public class Perfil extends Fragment {
                                     String dia = mainObject.getString("publicationDate").substring(8,10);
                                     //Log.i("fecha",dia+"/"+mes+"/"+anho);
                                     Log.d("usuario", mainObject.getString("usuario"));
-                                    publicaciones.add(new Publicacion("","", mainObject.getString("texto"),dia+"/"+mes+"/"+anho));
+                                    publicaciones.add(new Publicacion("","", mainObject.getString("texto"),dia+"/"+mes+"/"+anho,""));
+                                    if(mainObject.has("imagen")){
+                                        publicaciones.get(publicaciones.size()-1).setImagen(mainObject.getString("imagen"));
+                                    }
                                 }
 
                             }

@@ -98,6 +98,7 @@ public class Muro extends Fragment {
         // Inflate the layout for this fragment
        vista = inflater.inflate(R.layout.fragment_muro, container, false);
        ((Menu_Nav) getActivity()).setActionBarTitle("Muro");
+       publicaciones = new ArrayList<>();
        buscarpublicaciones(login.sharedPreferences.getString("token", ""));
        //agregarpublicaciones();
        //llenarlista();
@@ -152,12 +153,12 @@ public class Muro extends Fragment {
 
     public class milista extends ArrayAdapter<Publicacion>{
         public milista(){
-            super(vista.getContext(), R.layout.activity_itemamigo, publicaciones);
+            super(vista.getContext(), R.layout.activity_itempublicaciones, publicaciones);
         }
         public View getView(int position, View convertView, ViewGroup parent){
             View itemView = convertView;
 
-            if(publicaciones.get(position).getImagen() != 0) {
+            if(!publicaciones.get(publicaciones.size()-1-position).getImagen().equals("")) {
                 itemView = getLayoutInflater().inflate(R.layout.activity_itempublicaciones, parent, false);
             }
             else{
@@ -165,9 +166,9 @@ public class Muro extends Fragment {
             }
 
             Log.d("numero", String.valueOf(position));
-            Publicacion Currentpublicacion = publicaciones.get(position);
+            Publicacion Currentpublicacion = publicaciones.get(publicaciones.size()-1-position);
 
-            if(Currentpublicacion.getImagen() != 0){
+            if(!Currentpublicacion.getImagen().equals("")){
                 TextView NombreText = itemView.findViewById(R.id.textViewnombre);
                 TextView FechaText = itemView.findViewById(R.id.textViewfecha);
                 TextView Texto = itemView.findViewById(R.id.textViewtexto);
@@ -182,7 +183,11 @@ public class Muro extends Fragment {
                             .load(Uri.parse(Currentpublicacion.getFoto()))
                             .into(Foto);
                 }
-                Imagen.setImageResource(Currentpublicacion.getImagen());
+                if(!Currentpublicacion.getImagen().equals("")){
+                    Glide.with(getContext())
+                            .load(Uri.parse(Currentpublicacion.getImagen()))
+                            .into(Imagen);
+                }
             }
             else{
                 TextView NombreText = itemView.findViewById(R.id.textViewnombre);
@@ -233,7 +238,10 @@ public class Muro extends Fragment {
                                     //Log.i("fecha",dia+"/"+mes+"/"+anho);
                                     Log.d("usuario", mainObject.getString("usuario"));
                                     extraernombre(mainObject.getString("usuario"),i);
-                                    publicaciones.add(new Publicacion("",nombre+" "+apellido, mainObject.getString("texto"),dia+"/"+mes+"/"+anho));
+                                    publicaciones.add(new Publicacion("",nombre+" "+apellido, mainObject.getString("texto"),dia+"/"+mes+"/"+anho,""));
+                                    if(mainObject.has("imagen")){
+                                        publicaciones.get(publicaciones.size()-1).setImagen(mainObject.getString("imagen"));
+                                    }
                                 }
 
                             }

@@ -98,6 +98,7 @@ public class MuroAmigo extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_muro_amigo, container, false);
+        publicaciones = new ArrayList<>();
         ((Menu_Nav) getActivity()).setActionBarTitle("Muro de "+nombre);
         textonombre = vista.findViewById(R.id.textView_Nombre);
         fotoperfil = vista.findViewById(R.id.imageView_Foto);
@@ -164,7 +165,7 @@ public class MuroAmigo extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent){
             View itemView = convertView;
 
-            if(publicaciones.get(position).getImagen() != 0) {
+            if(!publicaciones.get(publicaciones.size()-1-position).getImagen().equals("")) {
                 itemView = getLayoutInflater().inflate(R.layout.activity_itempublicacionesamigo, parent, false);
             }
             else{
@@ -172,16 +173,20 @@ public class MuroAmigo extends Fragment {
             }
 
             Log.d("numero", String.valueOf(position));
-            Publicacion Currentpublicacion = publicaciones.get(position);
+            Publicacion Currentpublicacion = publicaciones.get(publicaciones.size()-1-position);
 
-            if(Currentpublicacion.getImagen() != 0){
+            if(!Currentpublicacion.getImagen().equals("")){
                 TextView FechaText = itemView.findViewById(R.id.textViewfecha);
                 TextView Texto = itemView.findViewById(R.id.textViewtexto);
                 ImageView Imagen = itemView.findViewById(R.id.imageViewimagen);
 
                 FechaText.setText(Currentpublicacion.getFecha());
                 Texto.setText(Currentpublicacion.getMensaje());
-                Imagen.setImageResource(Currentpublicacion.getImagen());
+                if(!Currentpublicacion.getImagen().equals("")){
+                    Glide.with(getContext())
+                            .load(Uri.parse(Currentpublicacion.getImagen()))
+                            .into(Imagen);
+                }
             }
             else{
                 TextView FechaText = itemView.findViewById(R.id.textViewfecha);
@@ -223,7 +228,10 @@ public class MuroAmigo extends Fragment {
                                     String dia = mainObject.getString("publicationDate").substring(8,10);
                                     //Log.i("fecha",dia+"/"+mes+"/"+anho);
                                     Log.d("usuario", mainObject.getString("usuario"));
-                                    publicaciones.add(new Publicacion("","", mainObject.getString("texto"),dia+"/"+mes+"/"+anho));
+                                    publicaciones.add(new Publicacion("","", mainObject.getString("texto"),dia+"/"+mes+"/"+anho,""));
+                                    if(mainObject.has("imagen")){
+                                        publicaciones.get(publicaciones.size()-1).setImagen(mainObject.getString("imagen"));
+                                    }
                                 }
 
                             }

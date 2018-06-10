@@ -96,6 +96,7 @@ public class Amigos extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_amigos, container, false);
+        personas = new ArrayList<>();
         ((Menu_Nav) getActivity()).setActionBarTitle("Personas");
         list = vista.findViewById(R.id.lista);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

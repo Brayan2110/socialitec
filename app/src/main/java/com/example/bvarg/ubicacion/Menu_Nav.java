@@ -2,7 +2,9 @@ package com.example.bvarg.ubicacion;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -37,13 +39,12 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Menu_Nav extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Conversacion.OnFragmentInteractionListener, Muro.OnFragmentInteractionListener, Mensajes.OnFragmentInteractionListener, Noticias.OnFragmentInteractionListener, Informacion.OnFragmentInteractionListener, HorarioBuses.OnFragmentInteractionListener, HorarioTrenes.OnFragmentInteractionListener, Mapa.OnFragmentInteractionListener, Directorio.OnFragmentInteractionListener, Horarios.OnFragmentInteractionListener, Amigos.OnFragmentInteractionListener, MuroAmigo.OnFragmentInteractionListener, Perfil.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Conversacion.OnFragmentInteractionListener, Muro.OnFragmentInteractionListener, Mensajes.OnFragmentInteractionListener, Noticias.OnFragmentInteractionListener, Informacion.OnFragmentInteractionListener, HorarioBuses.OnFragmentInteractionListener, HorarioTrenes.OnFragmentInteractionListener, Mapa.OnFragmentInteractionListener, Directorio.OnFragmentInteractionListener, Horarios.OnFragmentInteractionListener, Amigos.OnFragmentInteractionListener, MuroAmigo.OnFragmentInteractionListener, Perfil.OnFragmentInteractionListener, Publicar.OnFragmentInteractionListener {
 
     TextView textonombre;
     ImageView fotoperfil;
     NavigationView navigationView;
     static View hView;
-    static int cambio = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +64,6 @@ public class Menu_Nav extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
-        if(cambio==1){
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,new Noticias()).commit();
-        }
-
         extraernombre(login.sharedPreferences.getString("id",""));
     }
 
@@ -74,13 +71,21 @@ public class Menu_Nav extends AppCompatActivity
         setTitle(title);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                getSupportFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
+
         }
     }
 
@@ -100,7 +105,11 @@ public class Menu_Nav extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.configurarperfil) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_main,new Perfil()).commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_main,new Perfil())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
+                    .commit();
         }
         return super.onOptionsItemSelected(item);
     }

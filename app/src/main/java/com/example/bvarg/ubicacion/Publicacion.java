@@ -7,9 +7,9 @@ public class Publicacion {
     String Nombre;
     String Mensaje;
     String Fecha;
-    int Imagen;
+    String Imagen;
 
-    public Publicacion(String foto, String nombre, String mensaje, String fecha, int imagen) {
+    public Publicacion(String foto, String nombre, String mensaje, String fecha, String imagen) {
         Foto = foto;
         Nombre = nombre;
         Mensaje = mensaje;
@@ -18,14 +18,6 @@ public class Publicacion {
     }
 
     public Publicacion() {
-    }
-
-    public Publicacion(String foto, String nombre, String mensaje, String fecha) {
-        Foto = foto;
-        Nombre = nombre;
-        Mensaje = mensaje;
-        Fecha = fecha;
-        Imagen = 0;
     }
 
     public String getFoto() {
@@ -60,11 +52,11 @@ public class Publicacion {
         Fecha = fecha;
     }
 
-    public int getImagen() {
+    public String getImagen() {
         return Imagen;
     }
 
-    public void setImagen(int imagen) {
+    public void setImagen(String imagen) {
         Imagen = imagen;
     }
 }
